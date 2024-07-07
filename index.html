@@ -1,75 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- <meta charset="UTF-8"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CRM Chart Visualization</title>
     <link rel="stylesheet" href="styles.css" />
-    <!-- Include Google Charts library, using link to chart Loader-->
     <script
       type="text/javascript"
-      src="https://www.gstatic.com/charts/loader.js"></script>
-
-    <!-- Include Chart.js library from a CDN - (Content Delivery Network) -->
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-    <!-- Include Plotly.js -->
-     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-    <!-- Include D3.js library -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
-
-    <!-- Include ApexCharts -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
   </head>
-
   <body>
-
     <h1>CRM Chart Visualization</h1>
 
     <h2>Free Chart Libraries</h2>
-    
-    <h3>Google Charts</h3>
-    
-    <p>Visualization: Pie Chart:</p>
-    <div id="piechart" style="width: 900px; height: 500px"></div>
-    <p>Visualization: Column Chart:</p>
-    
-    <div
-      id="myColumnChart"
-      style="width: 100%; max-width: 600px; height: 500px"
-    ></div>
-    
-    <h3>Charts.js</h3>
-    
-    <p>Visualization: Pie Chart:</p>
-    <canvas id="myPieChart" style="width: 900px; width: 500px"></canvas>
-    
-    <p>Visualization: Bar Chart:</p>
-    <canvas id="myBarChart"></canvas>
-    
-    <h3>Plotly.js</h3>
-    <p>Visualization: Pie Chart:</p>
-    <div id="poltlyPieChart"></div>
 
-    <p>Visualization: Bar Chart:</p>
-    <div id="barPlotlyChart"></div>
+    <div class="chart-section">
+      <h3>Google Charts</h3>
+      <div class="canvas-container">
+        <h3>Visualize Pie Chart</h3>
+        <div id="piechart"></div>
+        <h3>Visualize Column Chart</h3>
+        <div id="myColumnChart"></div>
+      </div>
+    </div>
 
-    <h3>D3.js</h3>
-    
-    <p>Visualization: Pie Chart:</p>
-    <div id="pieChartD3" style="width: 600px; height: 600px"></div>
-    <div id="legend"></div>
-    <div id="columnChartD3"></div>
+    <div class="chart-section">
+      <h3>Charts.js</h3>
+      <div class="canvas-container">
+        <h3>Visualize Pie chart</h3>
+        <div class="chart-container">
+          <canvas id="myPieChart" width="550" height="550"></canvas>
+        </div>
+        <h3>Visualize Bar chart</h3>
+        <div class="chart-container">
+          <canvas id="myBarChart"></canvas>
+        </div>
+      </div>
+    </div>
 
-    <h3>ApexCharts</h3>
-    <p>Visualization: Pie Chart:</p>
-    <div id="pieApexChart"></div>
+    <div class="chart-section">
+      <h3>Plotly.js</h3>
 
-    <p>Visualization: Bar Chart:</p>
-    <div id="barApxChart"></div>
+      <div class="canvas-container">
+        <h3>Visualize Pie chart</h3>
+        <div id="poltlyPieChart"></div>
+        <h3>Visualize Bar chart</h3>
+        <div id="barPlotlyChart"></div>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <h3>D3.js</h3>
+      <div class="canvas-container">
+        <h3>Visualize Pie chart</h3>
+        <div id="pieChartD3"></div>
+        <h3>Visualize Column chart</h3>
+        <div id="columnChartD3"></div>
+      </div>
+    </div>
+
+    <div class="chart-section">
+      <h3>ApexCharts</h3>
+      <div class="canvas-container">
+        <h3>Visualize Pie chart</h3>
+        <div id="pieApexChart"></div>
+        <h3>Visualize Bar chart</h3>
+        <div id="barApexChart"></div>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>

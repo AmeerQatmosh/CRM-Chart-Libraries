@@ -2,11 +2,9 @@
 // |                                 1. Google Charts - Pie Chart                                | 
 // |---------------------------------------------------------------------------------------------|  
 
-// Load the Visualization API and the corechart package.
-google.charts.load('current', { 'packages': ['corechart'] });
 
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawPieChart);
+google.charts.load('current', { 'packages': ['corechart'] });    // Load the Visualization API and the corechart package.
+google.charts.setOnLoadCallback(drawPieChart); // Set a callback to run when the Google Visualization API is loaded.
 
 // Callback that creates and populates a data table, instantiates the bar chart, passes in the data and draws it.
 function drawPieChart() {
@@ -231,7 +229,7 @@ var myBarChart = new Chart(ctx, {
 // |                                         7. D3.js - Pie Chart                                | 
 // |---------------------------------------------------------------------------------------------|  
 
-// Data for the pie chart
+/// Data for the pie chart
 const dataPie = [
   { label: 'Converted', value: 52, color: 'rgb(162, 211, 223)' },
   { label: 'Qualified', value: 9, color: 'rgb(1, 117, 6)' },
@@ -255,25 +253,25 @@ const svgPie = d3.select("#pieChartD3")
   .attr("transform", `translate(${pieWidth / 2}, ${pieHeight / 2})`);
 
 // Create a pie function
-const pie = d3.pie()
+const pieGenerator = d3.pie()
   .value(d => d.value)
   .sort(null);
 
 // Create an arc function
-const arc = d3.arc()
+const arcGenerator = d3.arc()
   .innerRadius(0)
   .outerRadius(pieRadius * 0.8);
 
 // Create arcs and append them to the SVG
 const arcsPie = svgPie.selectAll(".arc")
-  .data(pie(dataPie))
+  .data(pieGenerator(dataPie))
   .enter()
   .append("g")
   .attr("class", "arc");
 
 // Append path elements for each slice
 arcsPie.append("path")
-  .attr("d", arc)
+  .attr("d", arcGenerator)
   .attr("fill", d => d.data.color)
   .attr("stroke", "white")
   .on("mouseover", function (event, d) {
@@ -285,7 +283,7 @@ arcsPie.append("path")
       .style("left", (event.pageX + 10) + "px")
       .style("top", (event.pageY - 15) + "px");
   })
-  .on("mouseout", function (d) {
+  .on("mouseout", function () {
     // Hide tooltip
     tooltipPie.transition()
       .duration(500)
@@ -297,29 +295,25 @@ const tooltipPie = d3.select("body").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0);
 
-// Create a legend under the #legend div
-const legendPie = d3.select("#legend")
-  .append("svg")
-  .attr("width", pieWidth)
-  .attr("height", 50)
-  .selectAll(".legend")
-  .data(dataPie)
-  .enter().append("g")
+// Create a legend under the #pieChartD3 div
+const legendPie = d3.select("#pieChartD3")
+  .append("div")
   .attr("class", "legend")
-  .attr("transform", (d, i) => `translate(${i * 100}, 0)`); // Adjust translate values as needed
+  .selectAll("div")
+  .data(dataPie)
+  .enter().append("div")
+  .attr("class", "legend-item");
 
-legendPie.append("rect")
-  .attr("x", 0)
-  .attr("y", 0)
-  .attr("width", 10)
-  .attr("height", 10)
-  .style("fill", d => d.color);
+legendPie.append("div")
+  .attr("class", "legend-color")
+  .style("background-color", d => d.color);
 
-legendPie.append("text")
-  .attr("x", 20)
-  .attr("y", 10)
-  .text(d => d.label)
-  .style("text-anchor", "start");
+legendPie.append("div")
+  .attr("class", "legend-label")
+  .text(d => d.label);
+
+
+
 
 // |---------------------------------------------------------------------------------------------| 
 // |                                      8. D3.js - Column Chart                                | 
@@ -374,16 +368,37 @@ svgColumn.append('g')
 svgColumn.append('g')
   .call(d3.axisLeft(yScaleColumn));
 
-// Bars
+// Bars with transitions and hover effects
 svgColumn.selectAll('.bar')
   .data(datasetColumn)
   .enter().append('rect')
   .attr('class', 'bar')
   .attr('x', d => xScaleColumn(d.date))
-  .attr('y', d => yScaleColumn(d.number))
   .attr('width', xScaleColumn.bandwidth())
-  .attr('height', d => heightColumn - yScaleColumn(d.number))
-  .attr('fill', 'steelblue');
+  .attr('y', heightColumn)
+  .attr('height', 0)
+  .attr('fill', 'steelblue')
+  .on('mouseover', function(event, d) {
+    d3.select(this)
+      .attr('fill', 'orange');
+    tooltipColumn.transition()
+      .duration(200)
+      .style('opacity', .9);
+    tooltipColumn.html(`<strong>Date:</strong> ${d.date}<br/><strong>Value:</strong> ${d.number}`)
+      .style('left', (event.pageX + 10) + 'px')
+      .style('top', (event.pageY - 15) + 'px');
+  })
+  .on('mouseout', function(d) {
+    d3.select(this)
+      .attr('fill', 'steelblue');
+    tooltipColumn.transition()
+      .duration(500)
+      .style('opacity', 0);
+  })
+  .transition()
+  .duration(800)
+  .attr('y', d => yScaleColumn(d.number))
+  .attr('height', d => heightColumn - yScaleColumn(d.number));
 
 // Add labels
 svgColumn.selectAll('.text')
@@ -392,11 +407,20 @@ svgColumn.selectAll('.text')
   .text(d => d.number)
   .attr('class', 'text')
   .attr('x', d => xScaleColumn(d.date) + xScaleColumn.bandwidth() / 2)
-  .attr('y', d => yScaleColumn(d.number) - 10)
+  .attr('y', heightColumn)
   .attr('text-anchor', 'middle')
   .attr('font-family', 'sans-serif')
   .attr('font-size', '12px')
-  .attr('fill', 'black');
+  .attr('fill', 'black')
+  .transition()
+  .duration(800)
+  .attr('y', d => yScaleColumn(d.number) - 10);
+
+// Create a tooltip
+const tooltipColumn = d3.select("body").append("div")
+  .attr("class", "tooltip")
+  .style("opacity", 0);
+
 
 
 
@@ -456,5 +480,7 @@ svgColumn.selectAll('.text')
   };
 
   // Plotting the bar chart
-  var barApexChart = new ApexCharts(document.querySelector("#barApxChart"), optionsBar);
+  var barApexChart = new ApexCharts(document.querySelector("#barApexChart"), optionsBar);
   barApexChart.render();
+
+
