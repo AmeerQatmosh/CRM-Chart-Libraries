@@ -164,66 +164,129 @@ var myBarChart = new Chart(ctx, {
 // |                                     5. Plotly.js - pie Chart                                | 
 // |---------------------------------------------------------------------------------------------|  
 
-  // Data for the pie chart
-  var dataPlotlyPie = [{
-    labels: ['Converted', 'Qualified', 'New', 'Interested', 'Not Qualified', 'Connected'],
-    values: [52, 9, 20, 25, 10, 5],
-    type: 'pie',
-    marker: {
-      colors: [
-        'rgb(162, 211, 223)',
-        'rgb(1, 117, 6)',
-        'rgb(1, 0, 243)',
-        'rgb(131, 234, 137)',
-        'rgb(255, 0, 2)',
-        'rgb(254, 155, 8)'
-      ]
-    }
-  }];
+// Data for the pie chart
+var dataPlotlyPie = [{
+  labels: ['Converted', 'Qualified', 'New', 'Interested', 'Not Qualified', 'Connected'],
+  values: [52, 9, 20, 25, 10, 5],
+  type: 'pie',
+  marker: {
+    colors: [
+      'rgb(162, 211, 223)',
+      'rgb(1, 117, 6)',
+      'rgb(1, 0, 243)',
+      'rgb(131, 234, 137)',
+      'rgb(255, 0, 2)',
+      'rgb(254, 155, 8)'
+    ]
+  }
+}];
 
-  // Layout for the pie chart
-  var layoutPlotlyPie = {
-    title: 'Statuses of expected customers',
-    showlegend: true,
-    legend: {
-      x: 0,
-      y: 1.0,
-      bgcolor: 'rgba(255, 255, 255, 0.5)',
-      bordercolor: 'rgba(255, 255, 255, 0)'
-    }
-  };
+// Layout for the pie chart
+var layoutPlotlyPie = {
+  title: 'Statuses of expected customers',
+  showlegend: true,
+  legend: {
+    x: 0,
+    y: 1.0,
+    bgcolor: 'rgba(255, 255, 255, 0.5)',
+    bordercolor: 'rgba(255, 255, 255, 0)'
+  }
+};
 
-  // Plotting the pie chart
-  Plotly.newPlot('poltlyPieChart', dataPlotlyPie, layoutPlotlyPie);
+// Plotting the pie chart
+Plotly.newPlot('poltlyPieChart', dataPlotlyPie, layoutPlotlyPie);
+
 
 // |---------------------------------------------------------------------------------------------| 
 // |                                     6. Plotly.js - Bar Chart                                | 
 // |---------------------------------------------------------------------------------------------| 
 
-  // Data for the bar chart
-  var dataPlotlyBar = [{
-    x: ['07/01/2024', '07/02/2024', '07/03/2024', '07/04/2024', '07/05/2024', '07/06/2024', '07/07/2024', '07/08/2024'],
-    y: [40, 20, 12, 39, 10, 40, 39, 80],
+var dates = ['07/01/2024', '07/02/2024', '07/03/2024', '07/04/2024', '07/05/2024', '07/06/2024', '07/07/2024', '07/08/2024'];
+var barvalues = [40, 20, 12, 39, 10, 40, 39, 80];
+var ids = [1, 2, 3, 4, 5, 6, 7, 8];
+
+var dataPlotlyBar = [{
+    x: dates,
+    y: barvalues,
+    text: ids,  // Custom data (IDs)
+    hovertemplate: 'Date: %{x}<br>Value: %{y}<br>ID: %{text}',  // Custom hover template
     type: 'bar',
     marker: {
       color: 'rgb(246, 110, 111)'
-    }
-  }];
+    },
+}];
 
-  // Layout for the bar chart
-  var layoutPlotlyBar = {
-    title: 'Leads',
-    xaxis: {
-      title: 'Date'
-    },
-    yaxis: {
-      title: ''
-    },
+var layoutPlotlyBar = {
+    title: 'Bar Chart with Click Events',
+    xaxis: { title: 'Date' },
+    yaxis: { title: 'Value' },
     barmode: 'group'
-  };
+};
 
-  // Plotting the bar chart
-  Plotly.newPlot('barPlotlyChart', dataPlotlyBar, layoutPlotlyBar);
+// Plotting the bar chart
+Plotly.newPlot('barPlotlyChart', dataPlotlyBar, layoutPlotlyBar);
+
+
+// Assuming 'barPlotlyChart' is the ID of your bar chart div
+var barChart = document.getElementById('barPlotlyChart');
+
+barChart.on('plotly_click', function(data) {
+    if(data.points) {
+        var point = data.points[0];
+        var date = point.x;
+        var value = point.y;
+        var id = point.text; // Custom data (ID)
+
+        console.log('Clicked on bar with date:', date);
+        console.log('Value:', value);
+        console.log('ID:', id);
+    }
+});
+
+
+barChart.on('plotly_afterplot', function() {
+    var labels = document.querySelectorAll('.bartext');
+
+    labels.forEach(function(label, index) {
+        label.on('click', function() {
+            var date = dates[index];
+            var id = ids[index];
+
+            console.log('Clicked on label for date:', date);
+            console.log('ID:', id);
+        });
+    });
+});
+
+
+//  // Data for the bar chart
+//  var dataPlotlyBar = [{
+//   x: ['07/01/2024', '07/02/2024', '07/03/2024', '07/04/2024', '07/05/2024', '07/06/2024', '07/07/2024', '07/08/2024'],
+//   y: [40, 20, 12, 39, 10, 40, 39, 80],
+//   type: 'bar',
+//   marker: {
+//     color: 'rgb(246, 110, 111)'
+//   }
+// }];
+
+// // Layout for the bar chart
+// var layoutPlotlyBar = {
+//   title: 'Leads',
+//   xaxis: {
+//     title: 'Date'
+//   },
+//   yaxis: {
+//     title: ''
+//   },
+//   barmode: 'group'
+// };
+
+// // Plotting the bar chart
+// Plotly.newPlot('barPlotlyChart', dataPlotlyBar, layoutPlotlyBar);
+
+
+
+
 
 // |---------------------------------------------------------------------------------------------| 
 // |                                         7. D3.js - Pie Chart                                | 
@@ -378,7 +441,7 @@ svgColumn.selectAll('.bar')
   .attr('y', heightColumn)
   .attr('height', 0)
   .attr('fill', 'steelblue')
-  .on('mouseover', function(event, d) {
+  .on('mouseover', function (event, d) {
     d3.select(this)
       .attr('fill', 'orange');
     tooltipColumn.transition()
@@ -388,7 +451,7 @@ svgColumn.selectAll('.bar')
       .style('left', (event.pageX + 10) + 'px')
       .style('top', (event.pageY - 15) + 'px');
   })
-  .on('mouseout', function(d) {
+  .on('mouseout', function (d) {
     d3.select(this)
       .attr('fill', 'steelblue');
     tooltipColumn.transition()
@@ -428,26 +491,26 @@ const tooltipColumn = d3.select("body").append("div")
 // |                                 9. ApexCharts.js - Pie Chart                                | 
 // |---------------------------------------------------------------------------------------------| 
 
-  // Data for the pie chart
-  var optionsPie = {
-    series: [52, 9, 20, 25, 10, 5],
-    labels: ['Converted', 'Qualified', 'New', 'Interested', 'Not Qualified', 'Connected'],
-    colors: ['#a2d3df', '#017506', '#0100f3', '#83ea89', '#ff0002', '#fe9b08'],
-    chart: {
-      type: 'pie',
-      height: 400
-    },
-    title: {
-      text: 'Statuses of expected customers'
-    },
-    legend: {
-      position: 'bottom'
-    }
-  };
+// Data for the pie chart
+var optionsPie = {
+  series: [52, 9, 20, 25, 10, 5],
+  labels: ['Converted', 'Qualified', 'New', 'Interested', 'Not Qualified', 'Connected'],
+  colors: ['#a2d3df', '#017506', '#0100f3', '#83ea89', '#ff0002', '#fe9b08'],
+  chart: {
+    type: 'pie',
+    height: 400
+  },
+  title: {
+    text: 'Statuses of expected customers'
+  },
+  legend: {
+    position: 'bottom'
+  }
+};
 
-  // Plotting the pie chart
-  var pieApexChart = new ApexCharts(document.querySelector("#pieApexChart"), optionsPie);
-  pieApexChart.render();
+// Plotting the pie chart
+var pieApexChart = new ApexCharts(document.querySelector("#pieApexChart"), optionsPie);
+pieApexChart.render();
 
 
 
@@ -455,32 +518,32 @@ const tooltipColumn = d3.select("body").append("div")
 // |                                10. ApexCharts.js - Bar Chart                                | 
 // |---------------------------------------------------------------------------------------------| 
 
-  // Data for the bar chart
-  var optionsBar = {
-    series: [{
-      name: 'Opportunities',
-      data: [40, 20, 12, 39, 10, 40, 39, 80]
-    }],
-    chart: {
-      type: 'bar',
-      height: 400
-    },
-    colors: ['#f66e6f'],
-    xaxis: {
-      categories: ['07/01/2024', '07/02/2024', '07/03/2024', '07/04/2024', '07/05/2024', '07/06/2024', '07/07/2024', '07/08/2024'],
-      title: {
-        text: 'Date'
-      }
-    },
-    yaxis: {
-      title: {
-        text: ''
-      }
+// Data for the bar chart
+var optionsBar = {
+  series: [{
+    name: 'Opportunities',
+    data: [40, 20, 12, 39, 10, 40, 39, 80]
+  }],
+  chart: {
+    type: 'bar',
+    height: 400
+  },
+  colors: ['#f66e6f'],
+  xaxis: {
+    categories: ['07/01/2024', '07/02/2024', '07/03/2024', '07/04/2024', '07/05/2024', '07/06/2024', '07/07/2024', '07/08/2024'],
+    title: {
+      text: 'Date'
     }
-  };
+  },
+  yaxis: {
+    title: {
+      text: ''
+    }
+  }
+};
 
-  // Plotting the bar chart
-  var barApexChart = new ApexCharts(document.querySelector("#barApexChart"), optionsBar);
-  barApexChart.render();
+// Plotting the bar chart
+var barApexChart = new ApexCharts(document.querySelector("#barApexChart"), optionsBar);
+barApexChart.render();
 
 
