@@ -1,6 +1,6 @@
 /* General chart container styling */
 #piechart, #myColumnChart, #myPieChart, #myBarChart, #poltlyPieChart, #barPlotlyChart,
-#pieApexChart, #barApexChart {
+#pieApexChart, #barApexChart, #echartsPieChart, #echartsBarChart {
   width: 90%;
   max-width: 100%;
   height: 500px; /* Adjust height as needed */

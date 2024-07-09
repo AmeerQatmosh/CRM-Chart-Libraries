@@ -206,21 +206,21 @@ var barvalues = [40, 20, 12, 39, 10, 40, 39, 80];
 var ids = [1, 2, 3, 4, 5, 6, 7, 8];
 
 var dataPlotlyBar = [{
-    x: dates,
-    y: barvalues,
-    text: ids,  // Custom data (IDs)
-    hovertemplate: 'Date: %{x}<br>Value: %{y}<br>ID: %{text}',  // Custom hover template
-    type: 'bar',
-    marker: {
-      color: 'rgb(246, 110, 111)'
-    },
+  x: dates,
+  y: barvalues,
+  text: ids,  // Custom data (IDs)
+  hovertemplate: 'Date: %{x}<br>Value: %{y}<br>ID: %{text}',  // Custom hover template
+  type: 'bar',
+  marker: {
+    color: 'rgb(246, 110, 111)'
+  },
 }];
 
 var layoutPlotlyBar = {
-    title: 'Bar Chart with Click Events',
-    xaxis: { title: 'Date' },
-    yaxis: { title: 'Value' },
-    barmode: 'group'
+  title: 'Bar Chart with Click Events',
+  xaxis: { title: 'Date' },
+  yaxis: { title: 'Value' },
+  barmode: 'group'
 };
 
 // Plotting the bar chart
@@ -230,32 +230,32 @@ Plotly.newPlot('barPlotlyChart', dataPlotlyBar, layoutPlotlyBar);
 // Assuming 'barPlotlyChart' is the ID of your bar chart div
 var barChart = document.getElementById('barPlotlyChart');
 
-barChart.on('plotly_click', function(data) {
-    if(data.points) {
-        var point = data.points[0];
-        var date = point.x;
-        var value = point.y;
-        var id = point.text; // Custom data (ID)
+barChart.on('plotly_click', function (data) {
+  if (data.points) {
+    var point = data.points[0];
+    var date = point.x;
+    var value = point.y;
+    var id = point.text; // Custom data (ID)
 
-        console.log('Clicked on bar with date:', date);
-        console.log('Value:', value);
-        console.log('ID:', id);
-    }
+    console.log('Clicked on bar with date:', date);
+    console.log('Value:', value);
+    console.log('ID:', id);
+  }
 });
 
 
-barChart.on('plotly_afterplot', function() {
-    var labels = document.querySelectorAll('.bartext');
+barChart.on('plotly_afterplot', function () {
+  var labels = document.querySelectorAll('.bartext');
 
-    labels.forEach(function(label, index) {
-        label.on('click', function() {
-            var date = dates[index];
-            var id = ids[index];
+  labels.forEach(function (label, index) {
+    label.on('click', function () {
+      var date = dates[index];
+      var id = ids[index];
 
-            console.log('Clicked on label for date:', date);
-            console.log('ID:', id);
-        });
+      console.log('Clicked on label for date:', date);
+      console.log('ID:', id);
     });
+  });
 });
 
 
@@ -547,3 +547,89 @@ var barApexChart = new ApexCharts(document.querySelector("#barApexChart"), optio
 barApexChart.render();
 
 
+
+// |---------------------------------------------------------------------------------------------| 
+// |                                11. EChart - Pie Chart                                       | 
+// |---------------------------------------------------------------------------------------------| 
+
+
+// Data for the pie chart
+var pieOption = {
+  title: {
+    text: 'Statuses of expected customers',
+    left: 'center'
+  },
+  tooltip: {
+    trigger: 'item'
+  },
+  legend: {
+    orient: 'horizontal',
+    bottom: 'bottom'
+  },
+  series: [
+    {
+      name: 'Statuses',
+      type: 'pie',
+      radius: '50%',
+      data: [
+        { value: 52, name: 'Converted' },
+        { value: 9, name: 'Qualified' },
+        { value: 20, name: 'New' },
+        { value: 25, name: 'Interested' },
+        { value: 10, name: 'Not Qualified' },
+        { value: 5, name: 'Connected' }
+      ],
+      color: ['#a2d3df', '#017506', '#0100f3', '#83ea89', '#ff0002', '#fe9b08'],
+      emphasis: {
+        itemStyle: {
+          shadowBlur: 10,
+          shadowOffsetX: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)'
+        }
+      }
+    }
+  ]
+};
+
+// Initialize the charts
+var pieChart = echarts.init(document.getElementById('echartsPieChart'));
+pieChart.setOption(pieOption);
+
+// |---------------------------------------------------------------------------------------------| 
+// |                                12. EChart - Bar Chart                                       | 
+// |---------------------------------------------------------------------------------------------| 
+
+
+// Data for the bar chart
+var barOption = {
+  tooltip: {
+    trigger: 'axis',
+    axisPointer: {
+      type: 'shadow'
+    }
+  },
+  xAxis: {
+    type: 'category',
+    data: ['07/01/2024', '07/02/2024', '07/03/2024', '07/04/2024', '07/05/2024', '07/06/2024', '07/07/2024', '07/08/2024'],
+    axisLabel: {
+      rotate: 45
+    },
+    title: {
+      text: 'Date'
+    }
+  },
+  yAxis: {
+    type: 'value'
+  },
+  series: [
+    {
+      name: 'Opportunities',
+      type: 'bar',
+      data: [40, 20, 12, 39, 10, 40, 39, 80],
+      color: '#f66e6f'
+    }
+  ]
+};
+
+var barChart = echarts.init(document.getElementById('echartsBarChart'));
+barChart.setOption(barOption);
